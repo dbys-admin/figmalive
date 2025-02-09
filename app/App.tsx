@@ -91,15 +91,8 @@ export default function Home() {
 
 	useEffect(()=>{
 		const canvas = initializeFabric({canvasRef, fabricRef})
-		let isPenInput = false;
-
+		
 		canvas.on("mouse:down", (options)=>{
-			const event = options.e as PointerEvent;
-			isPenInput = event.pointerType === "pen";
-
-			if (!isPenInput) return;
-
-
 			handleCanvasMouseDown({
 				options,
 				canvas,
@@ -107,12 +100,9 @@ export default function Home() {
 				shapeRef,
 				selectedShapeRef
 			}) 
-			
 		})
 
 		canvas.on("mouse:up", (options)=>{
-			if (!isPenInput) return;
-			
 			handleCanvasMouseUp	({
 				canvas,
 				isDrawing,
@@ -121,14 +111,10 @@ export default function Home() {
 				syncShapeInStorage,
 				setActiveElement,
 				activeObjectRef
-			})
-			
-			isPenInput = false;
+			}) 
 		})
 
 		canvas.on("mouse:move", (options)=>{
-			if (!isPenInput) return;
-
 			handleCanvaseMouseMove({
 				options,
 				canvas,
@@ -137,11 +123,8 @@ export default function Home() {
 				selectedShapeRef,
 				syncShapeInStorage
 			}) 
-			
 		})
 		canvas.on("object:modified", (options)=>{
-			if (!isPenInput) return;
-
 			handleCanvasObjectModified({
 				options,
 				syncShapeInStorage
@@ -149,11 +132,7 @@ export default function Home() {
 		})
 
 		canvas.on("path:created",(options)=>{
-			if (!isPenInput) return;
-			handlePathCreated({ options, syncShapeInStorage });
-			isPenInput = false;
-
-
+			handlePathCreated({options, syncShapeInStorage})
 		})
 
 		window.addEventListener("resize", ()=>{
