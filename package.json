@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@excalidraw/excalidraw": "^0.17.6",
     "@liveblocks/client": "^2.16.2",
     "@liveblocks/react": "^2.16.2",
     "@liveblocks/react-comments": "^1.12.0",

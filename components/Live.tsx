@@ -43,7 +43,6 @@ const Live = ({canvasRef}:Props) => {
             className="h-[100vh] w-full flex justify-center items-center text-center"
         >
             <canvas ref={canvasRef}  />
-            {/* <Excalidraw/> */}
             <LiveCursors others={others} />
         </div>
     )
