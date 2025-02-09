@@ -91,48 +91,47 @@ export default function Home() {
 
 	useEffect(()=>{
 		const canvas = initializeFabric({canvasRef, fabricRef})
-		
+		let isPenInput = false;
+
 		canvas.on("mouse:down", (options)=>{
-			const event = options.e as PointerEvent
-			if(event.pointerType === "pen" ){
-				handleCanvasMouseDown({
-					options,
-					canvas,
-					isDrawing,
-					shapeRef,
-					selectedShapeRef
-				}) 
-			}
+			const event = options.e as PointerEvent;
+			isPenInput = event.pointerType === "pen";
+
+			handleCanvasMouseDown({
+				options,
+				canvas,
+				isDrawing,
+				shapeRef,
+				selectedShapeRef
+			}) 
+			
 		})
 
 		canvas.on("mouse:up", (options)=>{
-
-			const event = options.e as PointerEvent
-			if(event.pointerType === "pen" ){
-				handleCanvasMouseUp	({
-					canvas,
-					isDrawing,
-					shapeRef,
-					selectedShapeRef,
-					syncShapeInStorage,
-					setActiveElement,
-					activeObjectRef
-				})
-			} 
+			isPenInput = false;
+			 
+			handleCanvasMouseUp	({
+				canvas,
+				isDrawing,
+				shapeRef,
+				selectedShapeRef,
+				syncShapeInStorage,
+				setActiveElement,
+				activeObjectRef
+			})
+			
 		})
 
 		canvas.on("mouse:move", (options)=>{
-			const event = options.e as PointerEvent
-			if(event.pointerType === "pen" ){
-				handleCanvaseMouseMove({
-					options,
-					canvas,
-					isDrawing,
-					shapeRef,
-					selectedShapeRef,
-					syncShapeInStorage
-				}) 
-			}
+			handleCanvaseMouseMove({
+				options,
+				canvas,
+				isDrawing,
+				shapeRef,
+				selectedShapeRef,
+				syncShapeInStorage
+			}) 
+			
 		})
 		canvas.on("object:modified", (options)=>{
 			handleCanvasObjectModified({
@@ -142,10 +141,11 @@ export default function Home() {
 		})
 
 		canvas.on("path:created",(options)=>{
-			const event = options.e as PointerEvent
-			if(event.pointerType === "pen" ){
+			if (isPenInput) {
 				handlePathCreated({options, syncShapeInStorage})
 			}
+			isPenInput = false; // Reset after handling
+
 		})
 
 		window.addEventListener("resize", ()=>{
