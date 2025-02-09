@@ -97,6 +97,9 @@ export default function Home() {
 			const event = options.e as PointerEvent;
 			isPenInput = event.pointerType === "pen";
 
+			if (!isPenInput) return;
+
+
 			handleCanvasMouseDown({
 				options,
 				canvas,
@@ -108,8 +111,8 @@ export default function Home() {
 		})
 
 		canvas.on("mouse:up", (options)=>{
-			isPenInput = false;
-			 
+			if (!isPenInput) return;
+			
 			handleCanvasMouseUp	({
 				canvas,
 				isDrawing,
@@ -120,9 +123,12 @@ export default function Home() {
 				activeObjectRef
 			})
 			
+			isPenInput = false;
 		})
 
 		canvas.on("mouse:move", (options)=>{
+			if (!isPenInput) return;
+
 			handleCanvaseMouseMove({
 				options,
 				canvas,
@@ -134,6 +140,8 @@ export default function Home() {
 			
 		})
 		canvas.on("object:modified", (options)=>{
+			if (!isPenInput) return;
+
 			handleCanvasObjectModified({
 				options,
 				syncShapeInStorage
@@ -141,10 +149,10 @@ export default function Home() {
 		})
 
 		canvas.on("path:created",(options)=>{
-			if (isPenInput) {
-				handlePathCreated({options, syncShapeInStorage})
-			}
-			isPenInput = false; // Reset after handling
+			if (!isPenInput) return;
+			handlePathCreated({ options, syncShapeInStorage });
+			isPenInput = false;
+
 
 		})
 
