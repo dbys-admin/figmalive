@@ -135,6 +135,26 @@ export default function Home() {
 			handlePathCreated({options, syncShapeInStorage})
 		})
 
+		canvas.on("gesture", (options) => {
+			const event = options.e as any;
+			const scale = event.sale || 1;
+
+
+			let zoom = canvas.getZoom() * scale;
+			if (zoom > 5) zoom = 5;
+			if (zoom < 0.5) zoom = 0.5;
+
+			const pointer = canvas.getPointer(event);
+
+			// Zoom relative to the gesture's focal point
+			canvas.zoomToPoint(pointer, zoom);
+		  
+			options.e.preventDefault();  
+
+
+		  });
+
+
 		window.addEventListener("resize", ()=>{
 			handleResize({canvas:fabricRef.current})
 		})
